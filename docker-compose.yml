@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  postgres:
+    build: .  # Use the Dockerfile in the current directory to build the image
+    container_name: hapi-pg
+    environment:
+      POSTGRES_USER: hapi-admin
+      POSTGRES_PASSWORD: hapi-pass
+      POSTGRES_DB: hapi-pg
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./pg_backups:/backups
+    networks:
+      - pgnetwork
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - pgnetwork
+
+volumes:
+  pgdata:
+
+networks:
+  pgnetwork:
