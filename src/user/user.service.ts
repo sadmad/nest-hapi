@@ -16,8 +16,13 @@ export class UserService {
     return user;
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(paginationOptions: { page: number; limit: number }): Promise<{ data: User[]; total: number }> {
+    const { page, limit } = paginationOptions;
+    const [data, total] = await this.userRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return { data, total };
   }
 
   async findOne(id: number): Promise<User> {

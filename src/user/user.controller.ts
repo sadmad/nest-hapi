@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 
@@ -12,8 +13,14 @@ export class UserController {
   }
 
   @Get()
-  async findAll(): Promise<User[]> {
-    return this.userService.findAll();
+  async findAll(
+    @Query('page') page: number = 1, // Default page is 1
+    @Query('limit') limit: number = 10, // Default limit is 10
+    @Res() res: Response,
+  ) {
+    const { data, total } = await this.userService.findAll({ page, limit });
+    res.set('X-Total-Count', total.toString());
+    res.json(data);
   }
 
   @Get(':id')
