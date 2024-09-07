@@ -66,3 +66,6 @@ pg_backups/
 
 # Docker-related files
 .docker/
+
+# confilict on container ports- you can change the ports to the port of the docker that you makes
+app.module.ts
