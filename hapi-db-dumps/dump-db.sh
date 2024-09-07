@@ -21,3 +21,15 @@ cd $REPO_PATH
 git add $DUMP_FILE
 git commit -m "Database dump for $(date)"
 git push origin main
+
+
+# To restore the dump file->
+# First step: you should copy the file into the container
+#
+# docker cp /full-path-to-the-dump-file/dump_2024-09-06_17:09:49.sql name-of-the-container:/dump.sql
+#
+# ***********************************************************************************
+#
+# Second step: Restoring a Plain SQL File
+#
+# docker exec -i hapi-pg psql -U hapi-admin -d hapi-pg -f /dump.sql
